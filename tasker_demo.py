@@ -1,3 +1,9 @@
+import sys
+import os
+
+sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LiTaskerDataHandler"))
+from DataHandler import *
+
 def get_task_status_text(percent):
     if percent == 0:
         return "To do"
@@ -5,11 +11,35 @@ def get_task_status_text(percent):
         return "In progress"
     else:
         return "Done"
-    
-#print (get_task_status_text(0))
-#print (get_task_status_text(60))
-#print (get_task_status_text(100))
 
+def show_tasks(tasks_list):
+    id_column_width = 4
+    progress_column_width = 8
+    status_column_width = 11
+    description_column_width = 40
+    due_date_column_width = 10
+    horizontal_line = '-' * (2 + id_column_width + 3 + progress_column_width + 3 + status_column_width + 3 + \
+        description_column_width + 3 + due_date_column_width + 2)
+    print (horizontal_line) 
+    print ("| " + "ID".ljust(id_column_width) + " | " + "Progress".ljust(progress_column_width) + " | " + \
+        "Status".ljust(status_column_width) + " | " + "Description".ljust(description_column_width) + " | " + \
+            "Due Date".ljust(due_date_column_width) + " |")
+    print (horizontal_line) 
+    
+    #print (id + " " + progress + " " + status + " " + description + " " + due_date)
+    for item in tasks_list:  
+            id = item[0]
+            progress = item[1]
+            status = get_task_status_text(int(progress))
+            description = item[2]
+            due_date = item[3]
+            print ("| " + id.ljust(id_column_width) + " | " + progress.ljust(progress_column_width) + " | " + \
+                status.ljust(status_column_width) + " | " + description.ljust(description_column_width) + " | " + \
+                due_date.ljust(due_date_column_width) + " |")
+    print (horizontal_line) 
+    
+
+dh = DataHandler()
 
 print("Available options:")
 print("1. List tasks for today.")
@@ -17,27 +47,23 @@ print("2. List all tasks.")
 print("3. Update task status.")
 print("4. Create task.")
 print("5. Exit")
-select = int(input("Please, select required option: "))
-print(select)
 while (True):
+    select = int(input("Please, select required option: "))
     if select == 1:
-        get_tasks_for_today = tasks_received
-        tasks_received = [
-            [0, 70, "Job 1", "30.09.1992"],
-            [1, 100, "Job 2", "1.06.1992"],
-            [2, 0, "Job 3", "23.05.2001"]
-        ]
-        print(list(tasks_received)
-        # get_tasks_for_today
-    # elif select == 2:
-    #     get_all_tasks
-    # elif select == 3:
-    #     print(input("Please, enter task id: "))
-    #     get_selected_task
-    #     print(input("Please enter task progress: "))
-    #     get_updated_task
-    # elif select == 4:
-    #     print(input("Please enter new task here: \n"))
-    #     add_task
-    # else:
-    #     break
+        tasks = dh.get_tasks_for_today()
+        show_tasks(tasks)
+    elif select == 2:
+        tasks = dh.get_all_tasks()
+        show_tasks(tasks)
+    elif select == 3:
+        task_id = input("Please, enter task id: ")
+        task_progress = input("Please enter task progress: ")
+        dh.update_task(task_id, task_progress)
+        print("Good job! Your task progress was successfully updated.")
+    elif select == 4:
+        add_desc = input("Please enter task description: ")
+        add_date = input("Also enter task due date (e.g: 04.12.2001): ")
+        dh.add_task(add_desc, add_date)
+        print("Your task was successfully added to tasks list!")
+    elif select == 5:
+        break
