@@ -5,6 +5,7 @@ sys.path.append(os.path.join(os.path.dirname(os.path.abspath(__file__)), "LiTask
 from DataHandler import *
 
 def get_task_status_text(percent):
+    """This function makes a connection between input progress values and task statuses"""
     if percent == 0:
         return "To do"
     elif percent < 100:
@@ -13,6 +14,7 @@ def get_task_status_text(percent):
         return "Done"
 
 def show_tasks(tasks_list):
+    """This function prints tasks from the list in User friendly style""" 
     id_column_width = 4
     progress_column_width = 8
     status_column_width = 11
@@ -25,8 +27,7 @@ def show_tasks(tasks_list):
         "Status".ljust(status_column_width) + " | " + "Description".ljust(description_column_width) + " | " + \
             "Due Date".ljust(due_date_column_width) + " |")
     print (horizontal_line) 
-    
-    #print (id + " " + progress + " " + status + " " + description + " " + due_date)
+    # ljust - is used to return left justified string with width, provided as parameter
     for item in tasks_list:  
             id = item[0]
             progress = item[1]
@@ -38,7 +39,7 @@ def show_tasks(tasks_list):
                 due_date.ljust(due_date_column_width) + " |")
     print (horizontal_line) 
     
-
+# create class oblect
 dh = DataHandler()
 
 print("Available options:")
@@ -67,3 +68,4 @@ while (True):
         print("Your task was successfully added to tasks list!")
     elif select == 5:
         break
+print("Thank you for using TaskOrganizer app. Stay organized! :)")
