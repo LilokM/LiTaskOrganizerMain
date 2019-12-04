@@ -1,0 +1,3 @@
+[submodule "LiTaskerDataHandler"]
+	path = LiTaskerDataHandler
+	url = https://github.com/m4kas/LiTaskerDataHandler.git
